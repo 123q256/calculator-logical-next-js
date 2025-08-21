@@ -14,13 +14,6 @@ import {
   useVATCalculatorMutation,
 } from "../../../redux/services/calculator/calculatorApi";
 
-// import {
-//   useGetSingleCalculatorDetailsMutation,
-// } from "../../../redux/services/calculator/calculatorApi";
-
-// import {
-//   useVATCalculatorMutation,
-// } from "../../../redux/services/datecalculator/dateCalculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../components/Calculator/ResultActions";
