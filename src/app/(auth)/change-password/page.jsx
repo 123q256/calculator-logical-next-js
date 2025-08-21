@@ -17,7 +17,7 @@ const Changepassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showcurrentPassword, setShowcurrentPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [currentUrl, setCurrentUrl] = useState("");
   const [changePassword, { isLoading, isError, isSuccess }] =
     useChangePasswordMutation();
 
@@ -25,12 +25,12 @@ const Changepassword = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentUrl =
-    typeof window !== "undefined"
-      ? window.location.origin +
-        pathname +
-        (searchParams?.toString() ? `?${searchParams}` : "")
-      : "";
+  // ✅ SSR safe window usage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   const metaTitle = "Change Password - Calculators Logical";
   const metaDescription = "Change Password - Calculators Logical";
@@ -66,13 +66,13 @@ const Changepassword = () => {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={currentUrl} />
+        {currentUrl && <meta property="og:url" content={currentUrl} />}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calculator-logical.com" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={currentUrl} />
+        {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head>
       <div className="max-w-[1660px]">
         <div

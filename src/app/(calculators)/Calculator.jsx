@@ -35,17 +35,6 @@ const Calculator = ({ isLoading, data, links, children }) => {
     }
   }, []);
 
-  // ✅ Ads safe injection
-  useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
-    } catch (e) {
-      console.error("Adsbygoogle push error: ", e);
-    }
-  }, []);
-
   // ✅ OG image check
   useEffect(() => {
     if (!data?.payload?.tech_calculator_link) return;
@@ -166,7 +155,7 @@ const Calculator = ({ isLoading, data, links, children }) => {
 
         <RightSideCalculator showRight={showRight}>
           {isLoading ? (
-            <div className="mt-10 bg-white border border-gray-100 rounded-2xl shadow-md p-4 sticky top-3 mt-[155px] mb-5">
+            <div className=" bg-white border border-gray-100 rounded-2xl shadow-md p-4 sticky top-3 mt-[155px] mb-5">
               <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
                 Related Calculators
               </h2>
