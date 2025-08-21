@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Head from "next/head";
 // ConverterList
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import ConverterSearch from "../../components/pages/Converter/component/ConverterSearch";
 import ConverterList from "../../components/pages/Converter/component/ConverterList";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -109,7 +109,7 @@ const UnitConvertor = () => {
   const [toUnit, setToUnit] = useState(2);
   const [result, setResult] = useState("");
   const [showResult, setShowResult] = useState(false);
-
+  const [currentUrl, setCurrentUrl] = useState("");
   const copyResult = () => {
     navigator.clipboard.writeText(result.toString());
     toast.success("Result copied to clipboard!");
@@ -694,16 +694,12 @@ const UnitConvertor = () => {
     rev_cal();
   }, [toValue]);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // ✅ Generate current URL safely
-  const currentUrl =
-    typeof window !== "undefined"
-      ? window.location.origin +
-        pathname +
-        (searchParams?.toString() ? `?${searchParams}` : "")
-      : "";
+  // ✅ SSR safe window usage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
   const metaTitle =
     "Conversion Calculator - Metric Units Measurement Converter";
   const metaDescription =
@@ -721,13 +717,13 @@ const UnitConvertor = () => {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={currentUrl} />
+        {currentUrl && <meta property="og:url" content={currentUrl} />}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calculator-logical.com" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={currentUrl} />
+        {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head>
 
       <div className="container mx-auto w-full max-w-screen-xl bg-white text-black  ">
