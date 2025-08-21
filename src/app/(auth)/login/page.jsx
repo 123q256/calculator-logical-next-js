@@ -7,21 +7,18 @@ import { useForm } from "react-hook-form";
 import { useLoginUserMutation } from "../../../redux/services/auth/authApi";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-
+import { useRouter, } from "next/navigation";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  // ✅ Generate current URL safely
-  const currentUrl =
-    typeof window !== "undefined"
-      ? window.location.origin +
-        pathname +
-        (searchParams?.toString() ? `?${searchParams}` : "")
-      : "";
+  // ✅ SSR safe window usage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   const {
     register,
@@ -69,13 +66,13 @@ const Login = () => {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={currentUrl} />
+        {currentUrl && <meta property="og:url" content={currentUrl} />}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calculator-logical.com" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={currentUrl} />
+        {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head>
 
       {/* The backdrop overlay */}

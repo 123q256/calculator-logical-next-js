@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { useRegisterNewUserMutation } from "../../../redux/services/auth/authApi
 import { toast } from "react-toastify";
 
 const Signup = () => {
+  const [currentUrl, setCurrentUrl] = useState("");
   const {
     register,
     handleSubmit,
@@ -31,7 +32,7 @@ const Signup = () => {
         sessionStorage.setItem("otp_id", result?.payload?.otp_id);
         sessionStorage.setItem("email", result?.payload?.email);
       }
-      
+
       toast.success("User Register Successfully");
       // Navigate to OTP page on success
       router.push("/otp");
@@ -45,13 +46,17 @@ const Signup = () => {
   const metaDescription = "Signup Page - Calculators Logical";
   const ogImage =
     "https://calculator-logical.com/images/ogview/pages/calculator-logical.png";
-  
-  // Get current URL safely for SSR
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  // ✅ SSR safe window usage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   return (
     <div className="flex justify-center items-center   relative">
-     <Head>
+      <Head>
         <title>{metaTitle || "My App"}</title>
         <meta name="description" content={metaDescription || "Description."} />
         <meta property="og:site_name" content="Calculator Logical" />
@@ -59,13 +64,13 @@ const Signup = () => {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={currentUrl} />
+        {currentUrl && <meta property="og:url" content={currentUrl} />}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calculator-logical.com" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={currentUrl} />
+        {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head>
       {/* The backdrop overlay */}
       <div className="absolute inset-0" />
@@ -170,7 +175,8 @@ const Signup = () => {
                 />
                 <div className="absolute inset-y-0 right-3 flex items-center pr-4">
                   <button
-                    type="button" className="cursor-pointer"
+                    type="button"
+                    className="cursor-pointer"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -239,7 +245,8 @@ const Signup = () => {
                 />
                 <div className="absolute inset-y-0 right-3 flex items-center pr-4">
                   <button
-                    type="button" className="cursor-pointer"
+                    type="button"
+                    className="cursor-pointer"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -298,7 +305,11 @@ const Signup = () => {
           </form>
 
           <div className="w-full flex justify-center h-[15px] my-3">
-            <img src="/logo/auth-continous-with-other.png" alt="" loading="lazy" />
+            <img
+              src="/logo/auth-continous-with-other.png"
+              alt=""
+              loading="lazy"
+            />
           </div>
           <div className="flex justify-center xl:my-5 my-3">
             <Link
