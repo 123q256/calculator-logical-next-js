@@ -10,6 +10,7 @@ import CategorySection from "@/components/pages/Home/category/CategorySection";
 import AboutCalculator from "@/components/pages/Home/AboutCalculator/AboutCalculator";
 import CalculatorCategory from "@/components/pages/Home/CalculatorCategory/CalculatorCategory";
 
+
 export default function Home() {
   const [currentUrl, setCurrentUrl] = useState("");
   const [canonicalUrl, setCanonicalUrl] = useState("");
