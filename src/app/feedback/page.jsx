@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCreatefeedbackEmailMutation } from "../../redux/services/AllEmails/feedbackApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,7 +8,7 @@ import Head from "next/head";
 
 const Feedback = () => {
   const [createfeedbackEmail, { isLoading }] = useCreatefeedbackEmailMutation();
-
+  const [currentUrl, setCurrentUrl] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,14 +25,22 @@ const Feedback = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.msg) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.subject ||
+      !formData.msg
+    ) {
       setError("All fields are required.");
       setDone(null);
       return;
     }
 
     try {
-      await createfeedbackEmail({ ...formData, message: formData.msg }).unwrap();
+      await createfeedbackEmail({
+        ...formData,
+        message: formData.msg,
+      }).unwrap();
 
       setDone("Your message has been sent successfully!");
       toast.success("Your message has been sent successfully!");
@@ -48,7 +56,12 @@ const Feedback = () => {
     }
   };
 
-  const currentUrl = window?.location?.href;
+  // ✅ SSR safe window usage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
   const ogImage =
     "https://calculator-logical.com/images/ogview/pages/calculator-logical.png";
   const metaTitle = "Feedback - Logical-calculator.com";
@@ -64,16 +77,20 @@ const Feedback = () => {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={currentUrl} />
+        {currentUrl && <meta property="og:url" content={currentUrl} />}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calculator-logical.com" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={`https://calculator-logical.com${window.location.pathname}`} />
+        {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head>
 
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
 
       <div className="py-5 lg:py-6 px-4 mx-auto max-w-screen-md">
         <div className="w-full mx-auto rounded-lg text-center mb-[20px]">
@@ -81,22 +98,29 @@ const Feedback = () => {
             Feedback
           </h1>
           <p className="text-[16px] font-[600] text-[#000000]">
-            Let us know if you have any questions regarding our content and calculators.
-            Our team at Calculator-Logical will be available 24/7 to assist you. 
-            Feel free to contact us for any queries!
+            Let us know if you have any questions regarding our content and
+            calculators. Our team at Calculator-Logical will be available 24/7
+            to assist you. Feel free to contact us for any queries!
           </p>
         </div>
 
         {error && (
-          <p className="text-lg text-center text-red-500 font-semibold">{error}</p>
+          <p className="text-lg text-center text-red-500 font-semibold">
+            {error}
+          </p>
         )}
         {done && (
-          <p className="text-lg text-center text-blue-500 font-semibold">{done}</p>
+          <p className="text-lg text-center text-blue-500 font-semibold">
+            {done}
+          </p>
         )}
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <div>
-            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Your Name
             </label>
             <input
@@ -112,7 +136,10 @@ const Feedback = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Your Email
             </label>
             <input
@@ -128,7 +155,10 @@ const Feedback = () => {
           </div>
 
           <div>
-            <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="subject"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Subject
             </label>
             <input
@@ -144,7 +174,10 @@ const Feedback = () => {
           </div>
 
           <div>
-            <label htmlFor="msg" className="block mb-2 text-sm font-medium text-gray-900">
+            <label
+              htmlFor="msg"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
               Your Message
             </label>
             <textarea
@@ -164,7 +197,11 @@ const Feedback = () => {
               type="submit"
               disabled={isLoading}
               className={`bg-[#000] w-full py-5 text-white font-[600] text-[16px] rounded-[44px] flex justify-center items-center shadow-2xl
-              ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-[#1A1A1A] hover:text-white"}`}
+              ${
+                isLoading
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:bg-[#1A1A1A] hover:text-white"
+              }`}
             >
               {isLoading ? (
                 <span className="flex items-center">
