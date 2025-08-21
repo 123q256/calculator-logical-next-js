@@ -1,8 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+
 import { useChangePasswordMutation } from "@/redux/services/auth/authApi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Head from "next/head";
 
