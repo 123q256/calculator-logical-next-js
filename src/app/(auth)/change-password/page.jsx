@@ -20,11 +20,6 @@ const Changepassword = () => {
   const [currentUrl, setCurrentUrl] = useState("");
   const [changePassword, { isLoading, isError, isSuccess }] =
     useChangePasswordMutation();
-
-  // ✅ move hooks inside component
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   // ✅ SSR safe window usage
   useEffect(() => {
     if (typeof window !== "undefined") {
