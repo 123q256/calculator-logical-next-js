@@ -26,7 +26,6 @@ export { default as DimensionalAnalysisCalculator } from "./DimensionalAnalysisC
 export { default as DisplacementCalculator } from "./DisplacementCalculator.jsx";
 export { default as EfficiencyCalculator } from "./EfficiencyCalculator.jsx";
 export { default as ElectricFieldCalculator } from "./ElectricFieldCalculator.jsx";
-export { default as ElectricFieldCalculator } from "./ElectricFieldCalculator.jsx";
 export { default as ElectricFluxCalculator } from "./ElectricFluxCalculator.jsx";
 export { default as ElectricityCostCalculator } from "./ElectricityCostCalculator.jsx";
 export { default as ElectricPotentialCalculator } from "./ElectricPotentialCalculator.jsx";

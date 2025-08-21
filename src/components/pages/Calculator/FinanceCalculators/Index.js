@@ -83,7 +83,6 @@ export { default as UnemploymentRateCalculator } from "./UnemploymentRateCalcula
 export { default as VADisabilityCalculator } from "./VADisabilityCalculator.jsx";
 export { default as VariableCostCalculator } from "./VariableCostCalculator.jsx";
 export { default as VatCalculator } from "./VatCalculator.jsx";
-export { default as VariableCostCalculator } from "./VariableCostCalculator.jsx";
 export { default as VatCalculator } from "./VatCalculator.jsx";
 export { default as WaterBillCalculator } from "./WaterBillCalculator.jsx";
 export { default as WeddingBudgetCalculator } from "./WeddingBudgetCalculator.jsx";
