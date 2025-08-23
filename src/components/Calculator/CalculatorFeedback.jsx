@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS
 import FeedbackModal from "./FeedbackModal";
@@ -13,8 +13,18 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
   const [likeCount, setLikeCount] = useState(likes);
   const [dislikeCount, setDislikeCount] = useState(dislikes);
   const [isSending, setIsSending] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    // Client-side only code
+    setLocation(window.location.href);
+  }, []);
 
   const handleLikeDislike = async (type) => {
+    if (typeof window === "undefined") return;
+    
     const pathSegments = window.location.pathname.split("/");
     const page = pathSegments[pathSegments.length - 1];
 
@@ -34,15 +44,12 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const location = window.location.href;
-
   const copyLink = () => {
-    navigator.clipboard.writeText(location);
-    toast.success("Link copied to clipboard!");
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(location);
+      toast.success("Link copied to clipboard!");
+    }
   };
-
-  const [isShareOpen, setIsShareOpen] = useState(false);
 
   return (
     <>
@@ -219,7 +226,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M21.3637 2.57333C20.5841 2.91381 19.7595 3.14 18.9153 3.24491C19.8052 2.71719 20.4704 1.88116 20.7848 0.895439C19.9518 1.38983 19.0404 1.73801 18.09 1.92491C17.5076 1.30207 16.7513 0.868896 15.9194 0.68173C15.0875 0.494564 14.2185 0.56207 13.4254 0.875467C12.6324 1.18886 11.952 1.73365 11.4728 2.43896C10.9936 3.14427 10.7377 3.97747 10.7384 4.83018C10.7355 5.15565 10.7686 5.48045 10.8374 5.7986C9.14681 5.71556 7.49276 5.27681 5.98328 4.51101C4.47381 3.74521 3.14287 2.66958 2.07739 1.35439C1.52973 2.28998 1.36006 3.39942 1.60305 4.45594C1.84605 5.51245 2.48338 6.43628 3.38476 7.0386C2.71197 7.02046 2.05342 6.84066 1.46476 6.51439V6.5607C1.46665 7.54139 1.8061 8.49153 2.42605 9.25141C3.04599 10.0113 3.90863 10.5346 4.86897 10.7333C4.50554 10.8288 4.13103 10.8755 3.75529 10.8723C3.48473 10.8773 3.21442 10.8533 2.94897 10.8007C3.2241 11.6441 3.75379 12.3816 4.46519 12.9116C5.17658 13.4417 6.03473 13.7383 6.9216 13.7607C5.4187 14.9354 3.56597 15.5735 1.65844 15.5733C1.31856 15.5762 0.978869 15.5565 0.641602 15.5144C2.58659 16.7684 4.85373 17.431 7.16792 17.4218C14.989 17.4218 19.2648 10.9439 19.2648 5.32912C19.2648 5.14176 19.2648 4.9607 19.25 4.77965C20.0827 4.17868 20.799 3.43103 21.3637 2.57333Z"
+                      d="M21.3637 2.57333C20.5841 2.91381 19.7595 3.14 18.9153 3.24491C19.8052 2.71719 20.4704 1.88116 20.7848 0.895439C19.9518 1.38983 19.0404 1.73801 18.09 1.92491C17.5076 1.30207 16.7513 0.868896 15.9194 0.68173C15.0875 0.494564 14.2185 0.56207 13.4254 0.875467C12.6324 1.18886 11.952 1.73365 11.4728 2.43896C10.9936 3.14427 10.7377 3.97747 10.7384 4.83018C10.7355 5.15565 10.7686 5.48045 10.8374 5.7986C9.14681 5.71556 7.49276 5.27681 5.98328 4.51101C4.47381 3.74521 3.14287 2.66958 2.07739 1.35439C1.52973 2.28998 1.36006 3.39942 1.60305 4.45594C1.84605 5.51245 2.48338 6.43628 3.38476 7.0386C2.71197 7.02046 2.05342 6.84066 1.46476 6.51439V6.5607C1.46665 7.54139 1.8061 8.49153 2.42605 9.25141C3.04599 10.0113 3.90863 10.5346 4.86897 10.7333C4.50554 10.8288 4.13103 10.8755 3.75529 10.8723C3.48473 10.8773 3.21442 10.8533 2.94897 10.8007C3.2241 11.6441 3.75379 12.3816 4.46519 12.9116C5.17658 13.4417 6.03473 13.7383 6.92160 13.7607C5.41870 14.9354 3.56597 15.5735 1.65844 15.5733C1.31856 15.5762 0.978869 15.5565 0.641602 15.5144C2.58659 16.7684 4.85373 17.431 7.16792 17.4218C14.989 17.4218 19.2648 10.9439 19.2648 5.32912C19.2648 5.14176 19.2648 4.96070 19.25 4.77965C20.0827 4.17868 20.799 3.43103 21.3637 2.57333Z"
                       fill="white"
                     />
                   </svg>
