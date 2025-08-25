@@ -270,7 +270,7 @@ const EstimatedEnergyRequirementCalculator = () => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: location.pathname, // This will use the current path dynamically
+          path: pathname, // This will use the current path dynamically
         },
       ]}
     >

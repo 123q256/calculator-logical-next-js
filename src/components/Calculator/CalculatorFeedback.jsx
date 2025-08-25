@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the CSS
 import FeedbackModal from "./FeedbackModal";
 import { useCreateuserresponseMutation } from "../../redux/services/Userresponse/userresponse";
 import Link from "next/link";
 
 const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
+  
   const [createUserRespones, { data, isLoading }] =
     useCreateuserresponseMutation();
 
@@ -17,10 +18,8 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
   const [location, setLocation] = useState("");
 
   useEffect(() => {
-    // Client-side only code - safely access window
-    if (typeof window !== "undefined") {
-      setLocation(window.location.href);
-    }
+    // Client-side only code
+    setLocation(window.location.href);
   }, []);
 
   const handleLikeDislike = async (type) => {
@@ -30,6 +29,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
     const page = pathSegments[pathSegments.length - 1];
 
     const calculator_name = calName || "nothing";
+
     const feedback = type === "like" ? "like" : "dislike";
 
     try {
@@ -53,6 +53,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
 
   return (
     <>
+      {/* Add ToastContainer to render notifications */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -146,6 +147,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
             device === "mobile" ? "justify-center" : ""
           }`}
         >
+      
           <p
             className="me-2 p-2 text-[15px] rounded-lg cursor-pointer hover:bg-[#e3e3e3] bg-white flex items-center justify-center"
             onClick={() => setIsOpen(true)}
@@ -164,7 +166,9 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
 
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+          {/* Modal Content */}
           <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-md w-full animate-fadeIn">
+            {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-3 right-3 text-gray-500 hover:text-black focus:outline-none cursor-pointer"
@@ -184,9 +188,12 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
                 />
               </svg>
             </button>
-            <h2 className="text-xl font-bold text-center mb-4">
+            {/* Modal Title */}
+            <hp className="text-xl font-bold text-center mb-4">
               Share your Result
+              <p />
               <p className="text-center text-xl mb-6 font-medium text-gray-800" />
+              {/* Social Media Icons */}
               <div className="flex justify-center space-x-4 mb-6">
                 <Link
                   href="#"
@@ -273,6 +280,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
                   </svg>
                 </Link>
               </div>
+              {/* Copyable Link */}
               <div className="flex items-center bg-gray-100 p-3 rounded-lg">
                 <input
                   type="text"
@@ -287,7 +295,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
                   <img src="/images_app/copy.svg" alt="" />
                 </button>
               </div>
-            </h2>
+            </hp>
           </div>
         </div>
       )}
