@@ -1025,4 +1025,5 @@ export const searchallcalculators = {
   864: ["Bond Price Calculator", "bond-price-calculator"],
   865: ["CAPM Calculator", "capm-calculator"],
   866: ["ARV Calculator", "arv-calculatorr"],
+  867: ["Baby Weight Percentile Calculator", "weight-percentile-calculator"],
 };
